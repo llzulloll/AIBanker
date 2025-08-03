@@ -18,11 +18,11 @@ async def lifespan(app: FastAPI):
     # Startup
     print("🚀 Starting AIBanker API...")
     
-    # Create database tables
-    async with engine.begin() as conn:
-        await conn.run_sync(Base.metadata.create_all)
+    # TODO: Initialize database connection
+    # For now, skip database initialization to focus on frontend
+    print("⚠️  Database initialization skipped for development")
     
-    print("✅ Database tables created successfully")
+    print("✅ AIBanker API started successfully")
     yield
     
     # Shutdown
