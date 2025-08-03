@@ -3,11 +3,15 @@ import { Box, Typography } from '@mui/material';
 
 const DueDiligence: React.FC = () => {
     return (
-        <Box>
-            <Typography variant="h4">Due Diligence</Typography>
-            <Typography variant="body1">Due diligence automation page coming soon...</Typography>
+        <Box sx={{ p: 3 }}>
+            <Typography variant="h4" sx={{ fontWeight: 700, mb: 2 }}>
+                Due Diligence
+            </Typography>
+            <Typography variant="body1" color="text.secondary">
+                AI-powered due diligence automation - Coming soon...
+            </Typography>
         </Box>
     );
 };
 
-export default DueDiligence; 
+export default DueDiligence;

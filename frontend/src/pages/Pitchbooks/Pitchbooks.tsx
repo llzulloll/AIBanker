@@ -3,11 +3,15 @@ import { Box, Typography } from '@mui/material';
 
 const Pitchbooks: React.FC = () => {
     return (
-        <Box>
-            <Typography variant="h4">Pitchbooks</Typography>
-            <Typography variant="body1">Pitchbook generation page coming soon...</Typography>
+        <Box sx={{ p: 3 }}>
+            <Typography variant="h4" sx={{ fontWeight: 700, mb: 2 }}>
+                Pitchbooks
+            </Typography>
+            <Typography variant="body1" color="text.secondary">
+                AI-powered pitchbook generation - Coming soon...
+            </Typography>
         </Box>
     );
 };
 
-export default Pitchbooks; 
+export default Pitchbooks;
