@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:8000/api/v1';
+const API_BASE_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8001/api/v1';
 
 // Create axios instance
 const api = axios.create({
@@ -52,53 +52,50 @@ export interface Deal {
     updated_at: string;
 }
 
-export interface DealFilters {
-    page?: number;
-    limit?: number;
-    status?: string;
-    deal_type?: string;
+export interface CreateDealData {
+    name: string;
+    description?: string;
+    deal_type: string;
+    target_company?: string;
+    target_industry?: string;
+    target_sector?: string;
+    target_revenue?: number;
+    target_ebitda?: number;
+    deal_value?: number;
+    deal_currency?: string;
+    transaction_fee?: number;
+    success_fee_rate?: number;
+    expected_close_date?: string;
+    due_diligence_deadline?: string;
 }
 
-export interface DealStatus {
-    deal_id: number;
-    status: string;
-    ai_processing_status: string;
-    due_diligence_completed: boolean;
-    pitchbook_generated: boolean;
-    risk_analysis_completed: boolean;
-    processing_time?: number;
-    ai_processing_errors?: string;
+export interface UpdateDealData extends Partial<CreateDealData> {
+    status?: string;
+    actual_close_date?: string;
 }
 
 export const dealsApi = {
     // Get all deals
-    getDeals: async (filters: DealFilters = {}) => {
-        const params = new URLSearchParams();
-        Object.entries(filters).forEach(([key, value]) => {
-            if (value !== undefined && value !== null) {
-                params.append(key, value.toString());
-            }
-        });
-
-        const response = await api.get<Deal[]>(`/deals?${params.toString()}`);
+    getDeals: async (params?: { skip?: number; limit?: number; status?: string; deal_type?: string }) => {
+        const response = await api.get('/deals', { params });
         return response;
     },
 
     // Get deal by ID
-    getDealById: async (dealId: number) => {
-        const response = await api.get<Deal>(`/deals/${dealId}`);
+    getDeal: async (dealId: number) => {
+        const response = await api.get(`/deals/${dealId}`);
         return response;
     },
 
     // Create new deal
-    createDeal: async (dealData: Partial<Deal>) => {
-        const response = await api.post<Deal>('/deals', dealData);
+    createDeal: async (dealData: CreateDealData) => {
+        const response = await api.post('/deals', dealData);
         return response;
     },
 
     // Update deal
-    updateDeal: async (dealId: number, dealData: Partial<Deal>) => {
-        const response = await api.put<Deal>(`/deals/${dealId}`, dealData);
+    updateDeal: async (dealId: number, dealData: UpdateDealData) => {
+        const response = await api.put(`/deals/${dealId}`, dealData);
         return response;
     },
 
@@ -109,14 +106,14 @@ export const dealsApi = {
     },
 
     // Start AI processing
-    startAIProcessing: async (dealId: number) => {
+    startProcessing: async (dealId: number) => {
         const response = await api.post(`/deals/${dealId}/start-processing`);
         return response;
     },
 
     // Get deal status
     getDealStatus: async (dealId: number) => {
-        const response = await api.get<DealStatus>(`/deals/${dealId}/status`);
+        const response = await api.get(`/deals/${dealId}/status`);
         return response;
     },
-}; 
+};
